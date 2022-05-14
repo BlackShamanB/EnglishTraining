@@ -1,0 +1,18 @@
+{{> header}}
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Уровень</th>
+        </tr>
+        {{#dictionarys}}
+            <tr>
+                <td><a href="/dictionariesByThemes/{{idDictionary}}">{{idDictionary}}</a></td>
+                <td><a href="/dictionariesByThemes/{{idDictionary}}">{{difficultyLevel}}</a></td>
+                <td><a href="/dictionariesByThemes/{{idDictionary}}/edit">Edit</a></td>
+            </tr>
+        {{/dictionarys}}
+    </table>
+    <a href="/theme/add">Добавить тему</a> |
+</div>
+{{> footer}}
