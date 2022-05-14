@@ -4,12 +4,18 @@
             <th>Id</th>
             <th>Уровень</th>
         </tr>
-        {{#dictionariesByThemes}}
+        {{#themesInDictionaries}}
             <tr>
                 <td><a href="/dictionary/{{idDictionary}}">{{idDictionary}}</a></td>
                 <td><a href="/dictionary/{{idDictionary}}">{{difficultyLevel}}</a></td>
                 <td><a href="/dictionary/{{idDictionary}}/edit">Edit</a></td>
             </tr>
-        {{/dictionariesByThemes}}
+        {{/themesInDictionaries}}
+        <div>
+    <nobr>
+        <a href="/themesInDictionaries/{{idDictionary}}/add">Добавить тему</a> |
+        <a href="/">Back to Index</a>
+    </nobr>
+</div>
     </table>
 {{> footer}}

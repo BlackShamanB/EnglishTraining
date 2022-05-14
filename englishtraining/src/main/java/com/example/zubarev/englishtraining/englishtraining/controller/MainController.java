@@ -1,13 +1,16 @@
 package com.example.zubarev.englishtraining.englishtraining.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
+import com.example.zubarev.englishtraining.englishtraining.service.LevelOfEducationService;
 import com.example.zubarev.englishtraining.englishtraining.service.ThemeService;
 import com.example.zubarev.englishtraining.englishtraining.service.UserService;
 
-import org.hibernate.annotations.common.util.impl.Log_.logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +22,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private UserService userService;
     private DictionaryService dictionaryService;
     private ThemeService themeService;
+    private LevelOfEducationService levelOfEducationService;
 
-    public MainController(UserService userService, DictionaryService dictionaryService, ThemeService themeService) {
+    
+    static {
+        // users.add(new User("Bill"));
+        // users.add(new User("Steve"));
+    }
+
+    public MainController(UserService userService, DictionaryService dictionaryService, ThemeService themeService,
+            LevelOfEducationService levelOfEducationService) {
         this.userService = userService;
         this.dictionaryService = dictionaryService;
         this.themeService = themeService;
+        this.levelOfEducationService = levelOfEducationService;
     }
-    // static {
-    //     users.add(new User("Bill"));
-    //     users.add(new User("Steve"));
-    // }
 
     @GetMapping("/")
     public String index() {
@@ -40,26 +49,31 @@ public class MainController {
     }
 
     @GetMapping("/dictionaryList")
-    public String dictionarys(Model model) {
+    public String dictionaryList(Model model) {
         model.addAttribute("dictionarys", dictionaryService.getAll());
-        
         return "dictionaryList";
     }
 
-    @GetMapping(value = {"/dictionaryList/add"})
-    public String showAddDictionary(Model model) {
-        Dictionary task = new Task("", "", LocalDate.now(), LocalTime.now(), "");
-        model.addAttribute("add", true);
-        model.addAttribute("tasks", task);
+    @PostMapping("/themesInDictionaries/{idDictionary}/add")
+    public String addDictionary(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
+        try {
+            Dictionary newDictionary = dictionaryService.addDictionary(dictionary);
+            return "redirect:/themesInDictionaries/" + newDictionary.getIdDictionary();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
 
-        return "taskEdit";
+            model.addAttribute("add", true);
+            return "themesInDictionaries";
+        }
     }
 
-    @GetMapping("/dictionariesByThemes/{idDictionary}")
-    public String dictionariesByThemes(Model model, @PathVariable long idDictionary) {
-        model.addAttribute("dictionariesByThemes", themeService.getByIdDictionary(idDictionary));
+    @GetMapping("/themesInDictionaries/{idDictionary}")
+    public String themesInDictionaries(Model model, @PathVariable long idDictionary) {
+        model.addAttribute("themesInDictionaries", themeService.getByIdDictionary(idDictionary));
         
-        return "dictionariesByThemes";
+        return "themesInDictionaries";
     }
     
     @GetMapping("/editingDictionaries")
@@ -72,13 +86,13 @@ public class MainController {
     public String addTheme(Model model, @ModelAttribute("tasks") Theme theme) {
         try {
             Theme newTheme = themeService.addTheme(theme);
-            return "redirect:/dictionariesByThemes/" + newTheme.getIdTheme();
+            return "redirect:/themesInDictionaries/" + newTheme.getIdTheme();
         } catch (Exception ex) {
             String errorMessage = ex.getMessage();
             model.addAttribute("errorMessage", errorMessage);
 
             model.addAttribute("add", true);
-            return "dictionariesByThemes";
+            return "themesInDictionaries";
         }
     }
 

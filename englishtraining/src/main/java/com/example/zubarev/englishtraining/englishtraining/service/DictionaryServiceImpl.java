@@ -18,4 +18,9 @@ public class DictionaryServiceImpl implements DictionaryService{
         return dictionaryRepos.findAll();
     }
 
+    @Override
+    public Dictionary addDictionary(Dictionary dictionary) {
+        return dictionaryRepos.save(dictionary);
+    }
+
 }
