@@ -4,6 +4,8 @@ package com.example.zubarev.englishtraining.englishtraining.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
@@ -32,6 +34,7 @@ public class MainController {
     static {
         // users.add(new User("Bill"));
         // users.add(new User("Steve"));
+        
     }
 
     public MainController(UserService userService, DictionaryService dictionaryService, ThemeService themeService,
@@ -50,68 +53,105 @@ public class MainController {
 
     @GetMapping("/dictionaryList")
     public String dictionaryList(Model model) {
+        model.addAttribute("dictionaryList", true);
         model.addAttribute("dictionarys", dictionaryService.getAll());
-        return "dictionaryList";
+        return "list";
     }
 
-    @PostMapping("/themesInDictionaries/{idDictionary}/add")
-    public String addDictionary(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
+    @GetMapping("/dictionaryList/add")
+    public String dictionaryListAdd(Model model) {
+        Dictionary dictionary = new Dictionary();
+        model.addAttribute("add", true);
+        model.addAttribute("dictionaryEdit", "true");
+        model.addAttribute("dictionary", dictionary);
+        return "edit";
+    }
+
+    @PostMapping("dictionaryList/add")
+    public String addTask(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
         try {
             Dictionary newDictionary = dictionaryService.addDictionary(dictionary);
-            return "redirect:/themesInDictionaries/" + newDictionary.getIdDictionary();
+            return "redirect:/dictionaryList/" + newDictionary.getIdDictionary();
         } catch (Exception ex) {
             String errorMessage = ex.getMessage();
             logger.error(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
-
+            model.addAttribute("dictionaryEdit", "true");
             model.addAttribute("add", true);
-            return "themesInDictionaries";
+            return "edit";
         }
     }
 
-    @GetMapping("/themesInDictionaries/{idDictionary}")
-    public String themesInDictionaries(Model model, @PathVariable long idDictionary) {
-        model.addAttribute("themesInDictionaries", themeService.getByIdDictionary(idDictionary));
-        
-        return "themesInDictionaries";
-    }
-    
-    @GetMapping("/editingDictionaries")
-    public String editingDictionaries(Model model) {
-        model.addAttribute("dictionarys", dictionaryService.getAll());
-        
-        return "editingDictionaries";
-    }
-    @PostMapping("theme/add")
-    public String addTheme(Model model, @ModelAttribute("tasks") Theme theme) {
+    @GetMapping("/dictionaryList/{dictionaryId}")
+    public String dictionaryBuId(Model model, @PathVariable long dictionaryId) {
+        Dictionary dictionary = null;
         try {
-            Theme newTheme = themeService.addTheme(theme);
-            return "redirect:/themesInDictionaries/" + newTheme.getIdTheme();
+            dictionary = dictionaryService.getDictionaryById(dictionaryId);
+            model.addAttribute("allowDelete", false);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("dictionary", dictionary);
+        model.addAttribute("themes", themeService.getAll());
+        return "dictionary";
+    }
+
+    @GetMapping("/dictionaryList/{dictionaryId}/edit")
+    public String showEditTask(Model model, @PathVariable long dictionaryId) {
+        Dictionary dictionary = null;
+        try {
+            dictionary = dictionaryService.getDictionaryById(dictionaryId);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("add", false);
+        model.addAttribute("dictionaryEdit", true);
+        model.addAttribute("dictionary", dictionary);
+        return "edit";
+    }
+
+    @PostMapping("/dictionaryList/{idDictionary}/edit")
+    public String editDictionary(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
+        try {
+            Dictionary newDictionary = dictionaryService.addDictionary(dictionary);
+            return "redirect:/dictionaryList/" + newDictionary.getIdDictionary();
         } catch (Exception ex) {
             String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
-
+            model.addAttribute("dictionaryEdit", true);
             model.addAttribute("add", true);
-            return "themesInDictionaries";
+            return "list";
         }
     }
 
-    @GetMapping(value = {"/theme/add"})
-    public String showAddTheme(Model model) {
-        Theme task = new Theme();
-        model.addAttribute("add", true);
-        model.addAttribute("theme", task);
-
-        return "taskEdit";
+    @GetMapping(value = {"/dictionaryList/{dictionaryId}/delete"})
+    public String showDeleteTask(
+            Model model, @PathVariable long dictionaryId) {
+        Dictionary dictionary = null;
+        try {
+            dictionary = dictionaryService.getDictionaryById(dictionaryId);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("allowDelete", true);
+        model.addAttribute("dictionary", dictionary);
+        return "dictionary";
     }
 
-    @RequestMapping(value = { "/personList" }, method = RequestMethod.GET)
-    public String viewPersonList(Model model) {
-        // users.add(new User("Bill"));
-        // users.add(new User("Steve"));
-        // model.addAttribute("persons", users);
-
-
-        return "personList";
+    @PostMapping(value = {"/dictionaryList/{dictionayId}/delete"})
+    public String deleteTaskById(
+            Model model, @PathVariable long dictionayId) {
+        try {
+            dictionaryService.deleteDictionaryById(dictionayId);
+            return "redirect:/dictionaryList";
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            return "list";
+        }
     }
+
+
 }

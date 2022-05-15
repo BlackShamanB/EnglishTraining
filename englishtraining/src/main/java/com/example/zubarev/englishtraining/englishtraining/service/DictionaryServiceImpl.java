@@ -1,5 +1,7 @@
 package com.example.zubarev.englishtraining.englishtraining.service;
 
+import java.util.Optional;
+
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
 import com.example.zubarev.englishtraining.englishtraining.repos.DictionaryRepos;
 
@@ -23,4 +25,16 @@ public class DictionaryServiceImpl implements DictionaryService{
         return dictionaryRepos.save(dictionary);
     }
 
+    @Override
+    public Dictionary getDictionaryById(long dictionaryId) {
+        Optional<Dictionary> dictionary = dictionaryRepos.findById(dictionaryId);
+        return dictionary.orElse(null);
+    }
+
+    @Override
+    public void deleteDictionaryById(long dictionaryId) {
+        dictionaryRepos.deleteById(dictionaryId);
+    }
+
+    
 }

@@ -1,19 +1,20 @@
 {{> header}}
+{{#dictionaryList}}
 <div>
     <table border="1">
         <tr>
             <th>Id</th>
             <th>Уровень</th>
-            <th>Название</th>
         </tr>
         {{#dictionarys}}
             <tr>
-                <td><a href="/themesInDictionaries/{{idDictionary}}">{{idDictionary}}</a></td>
-                <td><a href="/themesInDictionaries/{{idDictionary}}">{{difficultyLevel}}</a></td>
-                <td><a href="/themesInDictionaries/{{idDictionary}}/edit">Edit</a></td>
+                <td><a href="/dictionaryList/{{idDictionary}}">{{idDictionary}}</a></td> 
+                <td><a href="/dictionaryList/{{idDictionary}}">{{difficultyLevel}}</a></td> 
+                <td><a href="/dictionaryList/{{idDictionary}}/edit">Edit</a></td> 
             </tr>
         {{/dictionarys}}
     </table>
     <a href="/dictionaryList/add">Добавить словарь</a> |
 </div>
+{{/dictionaryList}}
 {{> footer}}

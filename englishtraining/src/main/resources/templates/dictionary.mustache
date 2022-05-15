@@ -1,0 +1,33 @@
+{{> header}}
+<h1>View dictionary</h1>
+<a href="/dictionaryList">Back to Task List</a>
+<br/><br/>
+{{#dictionary}}
+    <table border="0">
+        <tr>
+            <td>Id</td>
+            <td>:</td>
+            <td>{{dictionary.idDictionary}}</td>
+        </tr>
+         <tr>
+            <td>Название словаря</td>
+            <td>:</td>
+            <td>{{dictionary.difficultyLevel}}</td>
+        </tr>
+    </table>
+    <br/><br/>
+    {{#allowDelete}}
+        <form action="/dictionaryList/{{dictionary.idDictionary}}/delete" method="POST">
+            Delete this task? <input type="submit" value="Yes" />
+        </form>
+    {{/allowDelete}}
+    {{^allowDelete}}
+        <div>
+            <a href="/dictionaryList/{{dictionary.idDictionary}}/edit">Edit</a> |
+            <a href="/dictionaryList/{{dictionary.idDictionary}}/delete">Delete</a>
+        </div>
+    {{/allowDelete}}
+{{/dictionary}}
+{{#errorMessage}}
+    <div class="error">{{errorMessage}}</div>
+{{/errorMessage}}
