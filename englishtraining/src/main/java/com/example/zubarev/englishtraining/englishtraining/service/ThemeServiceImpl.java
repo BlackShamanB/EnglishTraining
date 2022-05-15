@@ -1,6 +1,7 @@
 package com.example.zubarev.englishtraining.englishtraining.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
 import com.example.zubarev.englishtraining.englishtraining.repos.ThemeRepos;
@@ -28,5 +29,16 @@ public class ThemeServiceImpl implements ThemeService{
     @Override
     public Theme addTheme(Theme theme) {
         return themeRepos.save(theme);
+    }
+
+    @Override
+    public Theme getThemeById(Long idTheme) {
+        Optional<Theme> theme =themeRepos.findById(idTheme);
+        return theme.orElse(null);
+    }
+
+    @Override
+    public void deleteThemeById(Long idTheme) {
+        themeRepos.deleteById(idTheme);
     }
 }

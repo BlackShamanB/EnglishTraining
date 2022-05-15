@@ -23,6 +23,29 @@
 </form>
 {{/dictionaryEdit}}
 
+{{#themeEdit}}
+<h1>{{#add}}Создать новую тему:{{/add}}{{^add}}Изменить тему:{{/add}}</h1>
+<a href="/dictionaryList/{{dictionaryId}}">Назад к списку тем</a>
+<br/><br/>
+<form action="{{#add}}/dictionaryList/{{dictionaryId}}/add{{/add}}{{^add}}/dictionaryList/{{dictionaryId}}/{{theme.idTheme}}/edit{{/add}}" name="newTheme" method="POST">
+    <table border="0">
+        {{#theme.idTheme}}
+            <tr>
+                <td>id theme</td>
+                <td>:</td>
+                <td>{{theme.idTheme}}</td>
+            </tr>
+        {{/theme.idTheme}}
+            <input type="hidden" name="idDictionary" value="{{dictionaryId}}"/>
+        <tr>
+            <td>Название Темы</td>
+            <td>:</td>
+            <td><input type="text" name="theme" value="{{#theme.theme}}{{theme.theme}}{{/theme.theme}}" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+</form>
+{{/themeEdit}}
 <br/>
 <!-- Check if errorMessage is not null and not empty -->
 <div class="error">{{#errorMessage}}{{errorMessage}}{{/errorMessage}}</div>

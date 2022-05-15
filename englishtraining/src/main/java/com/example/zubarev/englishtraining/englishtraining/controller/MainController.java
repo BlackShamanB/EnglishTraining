@@ -91,13 +91,14 @@ public class MainController {
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
+        model.addAttribute("dictionaryElement", true);
         model.addAttribute("dictionary", dictionary);
-        model.addAttribute("themes", themeService.getAll());
-        return "dictionary";
+        model.addAttribute("themes", themeService.getByIdDictionary(dictionaryId));
+        return "list";
     }
 
     @GetMapping("/dictionaryList/{dictionaryId}/edit")
-    public String showEditTask(Model model, @PathVariable long dictionaryId) {
+    public String showEditDictionary(Model model, @PathVariable long dictionaryId) {
         Dictionary dictionary = null;
         try {
             dictionary = dictionaryService.getDictionaryById(dictionaryId);
@@ -134,9 +135,10 @@ public class MainController {
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
+        model.addAttribute("dictionaryElement", true);
         model.addAttribute("allowDelete", true);
         model.addAttribute("dictionary", dictionary);
-        return "dictionary";
+        return "list";
     }
 
     @PostMapping(value = {"/dictionaryList/{dictionayId}/delete"})
@@ -154,4 +156,109 @@ public class MainController {
     }
 
 
+    @GetMapping("/dictionaryList/{dictionaryId}/add")
+    public String themeAdd(Model model,@PathVariable long dictionaryId) {
+        Theme theme = new Theme();
+        model.addAttribute("add", true);
+        model.addAttribute("themeEdit", "true");
+        model.addAttribute("dictionaryId", dictionaryId);
+        model.addAttribute("theme", theme);
+        return "edit";
+    }
+
+    @PostMapping("/dictionaryList/{dictionaryId}/add")
+    public String addTheme(Model model, @ModelAttribute("newTheme") Theme theme) {
+        try {
+            Theme newTheme = themeService.addTheme(theme);
+            return "redirect:/dictionaryList/{dictionaryId}/" + newTheme.getIdTheme();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("dictionaryEdit", "true");
+            model.addAttribute("add", true);
+            return "edit";
+        }
+    }
+
+    @GetMapping("/dictionaryList/{dictionaryId}/{themeId}")
+    public String themeById(Model model, @PathVariable long dictionaryId, @PathVariable long themeId) {
+        Theme theme = null;
+        try {
+            theme = themeService.getThemeById(themeId);
+            model.addAttribute("allowDelete", false);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("theme", theme);
+        model.addAttribute("themeElement", "true");
+        model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
+        // model.addAttribute("themes", themeService.getAll());
+        return "list";
+    }
+
+    @GetMapping("/dictionaryList/{dictionaryId}/{idTheme}/edit")
+    public String editTheme(Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        Dictionary dictionary = null;
+        Theme theme = null;
+        try {
+            dictionary = dictionaryService.getDictionaryById(dictionaryId);
+            theme = themeService.getThemeById(idTheme);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("add", false);
+        model.addAttribute("themeEdit", true);
+        model.addAttribute("dictionary", dictionary);
+        model.addAttribute("theme", theme);
+        return "edit";
+    }
+
+    @PostMapping("/dictionaryList/{idDictionary}/{idTheme}/edit")
+    public String editTheme(Model model, @PathVariable long idDictionary, @ModelAttribute("newTheme") Theme theme) {
+        try {
+            Theme newTheme = themeService.addTheme(theme);
+            return "redirect:/dictionaryList/" +idDictionary+"/"+ newTheme.getIdTheme();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("themeEdit", true);
+            model.addAttribute("add", true);
+            model.addAttribute("dictionary", dictionaryService.getDictionaryById(idDictionary));
+            return "list";
+        }
+    }
+
+    @GetMapping(value = {"/dictionaryList/{dictionaryId}/{idTheme}/delete"})
+    public String deleteTheme(
+            Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        Theme theme = null;
+        try {
+            theme = themeService.getThemeById(idTheme);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
+        model.addAttribute("themeElement", true);
+        model.addAttribute("allowDelete", true);
+        model.addAttribute("theme", theme);
+        return "list";
+    }
+
+    @PostMapping(value = {"/dictionaryList/{dictionaryId}/{idTheme}/delete"})
+    public String deleteThemeById(
+            Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        try {
+            themeService.deleteThemeById(idTheme);
+            return "redirect:/dictionaryList/"+dictionaryId;
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("themeElement", true);
+            return "list";
+        }
+    }
 }
