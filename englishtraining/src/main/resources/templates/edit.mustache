@@ -3,20 +3,23 @@
 {{#dictionaryEdit}}
 <h1>{{#add}}Создать новый словарь:{{/add}}{{^add}}Изменить словарь:{{/add}}</h1>
 <a href="/dictionaryList">Назад к списку словарей</a>
-<br/><br/>
-<form action="{{#add}}/dictionaryList/add{{/add}}{{^add}}/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}" name="dictionary" method="POST">
+<br /><br />
+<form action="{{#add}}/dictionaryList/add{{/add}}{{^add}}/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}"
+    name="dictionary" method="POST">
     <table border="0">
         {{#dictionary.idDictionary}}
-            <tr>
-                <td>idDictionary</td>
-                <td>:</td>
-                <td>{{dictionary.idDictionary}}</td>
-            </tr>
+        <tr>
+            <td>idDictionary</td>
+            <td>:</td>
+            <td>{{dictionary.idDictionary}}</td>
+        </tr>
         {{/dictionary.idDictionary}}
         <tr>
             <td>Название словаря</td>
             <td>:</td>
-            <td><input type="text" name="difficultyLevel" value="{{#dictionary.difficultyLevel}}{{dictionary.difficultyLevel}}{{/dictionary.difficultyLevel}}" /></td>
+            <td><input type="text" name="difficultyLevel"
+                    value="{{#dictionary.difficultyLevel}}{{dictionary.difficultyLevel}}{{/dictionary.difficultyLevel}}" />
+            </td>
         </tr>
     </table>
     <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
@@ -26,17 +29,19 @@
 {{#themeEdit}}
 <h1>{{#add}}Создать новую тему:{{/add}}{{^add}}Изменить тему:{{/add}}</h1>
 <a href="/dictionaryList/{{dictionaryId}}">Назад к списку тем</a>
-<br/><br/>
-<form action="{{#add}}/dictionaryList/{{dictionaryId}}/add{{/add}}{{^add}}/dictionaryList/{{dictionaryId}}/{{theme.idTheme}}/edit{{/add}}" name="newTheme" method="POST">
+<br /><br />
+<form
+    action="{{#add}}/dictionaryList/{{dictionaryId}}/add{{/add}}{{^add}}/dictionaryList/{{dictionaryId}}/{{theme.idTheme}}/edit{{/add}}"
+    name="newTheme" method="POST">
     <table border="0">
         {{#theme.idTheme}}
-            <tr>
-                <td>id theme</td>
-                <td>:</td>
-                <td>{{theme.idTheme}}</td>
-            </tr>
+        <tr>
+            <td>id theme</td>
+            <td>:</td>
+            <td>{{theme.idTheme}}</td>
+        </tr>
         {{/theme.idTheme}}
-            <input type="hidden" name="idDictionary" value="{{dictionaryId}}"/>
+        <input type="hidden" name="idDictionary" value="{{dictionaryId}}" />
         <tr>
             <td>Название Темы</td>
             <td>:</td>
@@ -46,7 +51,43 @@
     <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
 </form>
 {{/themeEdit}}
-<br/>
+
+{{#wordEdit}}
+<h1>{{#add}}Добавить новое слово:{{/add}}{{^add}}Изменить слово:{{/add}}</h1>
+<a href="/dictionaryList/{{idDictionary}}/{{idTheme}}">Назад к списку тем</a>
+<br /><br />
+<form
+    action="{{#add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{idWord}}/add{{/add}}{{^add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{idWord}}/edit{{/add}}"
+    name="newWord" method="POST">
+    <table border="0">
+        {{#word.idWord}}
+        <tr>
+            <td>id</td>
+            <td>:</td>
+            <td>{{word.idWord}}</td>
+        </tr>
+        {{/word.idWord}}
+        <input type="hidden" name="idTheme" value="{{idTheme}}" />
+        <tr>
+            <td>Слово</td>
+            <td>:</td>
+            <td><input type="text" name="word" value="{{#word.word}}{{word.word}}{{/word.word}}" /></td>
+        </tr>
+        <tr>
+            <td>Транскрипция</td>
+            <td>:</td>
+            <td><input type="text" name="transcription" value="{{#word.transcription}}{{word.transcription}}{{/word.transcription}}" /></td>
+        </tr>
+        <tr>
+            <td>Перевод</td>
+            <td>:</td>
+            <td><input type="text" name="translate" value="{{#word.translate}}{{word.translate}}{{/word.translate}}" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+</form>
+{{/wordEdit}}
+<br />
 <!-- Check if errorMessage is not null and not empty -->
 <div class="error">{{#errorMessage}}{{errorMessage}}{{/errorMessage}}</div>
 {{> footer}}

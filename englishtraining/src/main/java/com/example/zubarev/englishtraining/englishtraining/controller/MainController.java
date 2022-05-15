@@ -8,10 +8,12 @@ import java.util.Optional;
 
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
+import com.example.zubarev.englishtraining.englishtraining.model.Word;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
 import com.example.zubarev.englishtraining.englishtraining.service.LevelOfEducationService;
 import com.example.zubarev.englishtraining.englishtraining.service.ThemeService;
 import com.example.zubarev.englishtraining.englishtraining.service.UserService;
+import com.example.zubarev.englishtraining.englishtraining.service.WordService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ public class MainController {
     private UserService userService;
     private DictionaryService dictionaryService;
     private ThemeService themeService;
+    private WordService wordService;
     private LevelOfEducationService levelOfEducationService;
 
     
@@ -37,11 +40,12 @@ public class MainController {
         
     }
 
-    public MainController(UserService userService, DictionaryService dictionaryService, ThemeService themeService,
+    public MainController(UserService userService, DictionaryService dictionaryService, ThemeService themeService, WordService wordSercive,
             LevelOfEducationService levelOfEducationService) {
         this.userService = userService;
         this.dictionaryService = dictionaryService;
         this.themeService = themeService;
+        this.wordService = wordSercive;
         this.levelOfEducationService = levelOfEducationService;
     }
 
@@ -193,7 +197,7 @@ public class MainController {
         model.addAttribute("theme", theme);
         model.addAttribute("themeElement", "true");
         model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
-        // model.addAttribute("themes", themeService.getAll());
+        model.addAttribute("words", wordService.getAll());
         return "list";
     }
 
@@ -248,6 +252,118 @@ public class MainController {
 
     @PostMapping(value = {"/dictionaryList/{dictionaryId}/{idTheme}/delete"})
     public String deleteThemeById(
+            Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        try {
+            themeService.deleteThemeById(idTheme);
+            return "redirect:/dictionaryList/"+dictionaryId;
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("themeElement", true);
+            return "list";
+        }
+    }
+    
+    @GetMapping("/dictionaryList/{idDictionary}/{idTheme}/add")
+    public String wordAdd(Model model,@PathVariable long idDictionary, @PathVariable long idTheme) {
+        Word word = new Word(idTheme, "","","");
+        model.addAttribute("add", true);
+        model.addAttribute("wordEdit", "true");
+        model.addAttribute("word", word);
+        model.addAttribute("idWord", word);
+        model.addAttribute("idDictionary", idDictionary);
+        model.addAttribute("idTheme", idTheme);
+        return "edit";
+    }
+
+    @PostMapping("/dictionaryList/{idDictionary}/{idTheme}/add")
+    public String addWord(Model model, @ModelAttribute("newWord") Word word) {
+        try {
+            Word newWord = wordService.addWord(word);
+            return "redirect:/dictionaryList/{dictionaryId}/{idTheme}" + newWord.getIdTheme();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("dwordEdit", "true");
+            model.addAttribute("add", true);
+            return "edit";
+        }
+    }
+
+    @GetMapping("/dictionaryList/{idDictionary}/{idTheme}/{idWord}")
+    public String wordById(Model model, @PathVariable long idDictionary, @PathVariable long idTheme, @PathVariable long idWord) {
+        Word word = null;
+        try {
+            word = wordService.getWordById(idWord);
+            model.addAttribute("allowDelete", false);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("word", word);
+        model.addAttribute("wordElement", "true");
+        model.addAttribute("theme", themeService.getThemeById(idTheme));
+        model.addAttribute("dictionary", dictionaryService.getDictionaryById(idDictionary));
+        // model.addAttribute("themes", themeService.getAll());
+        return "list";
+    }
+
+    @GetMapping("/dictionaryList/{dictionaryId}/{idTheme}/{idWord}/edit")
+    public String editWord(Model model, @PathVariable long dictionaryId, @PathVariable long idTheme, @PathVariable long idWord) {
+        Dictionary dictionary = null;
+        Theme theme = null;
+        Word word = null;
+        try {
+            dictionary = dictionaryService.getDictionaryById(dictionaryId);
+            theme = themeService.getThemeById(idTheme);
+            word = wordService.getWordById(idWord);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("add", false);
+        model.addAttribute("wordEdit", true);
+        model.addAttribute("dictionary", dictionary);
+        model.addAttribute("theme", theme);
+        model.addAttribute("word", word);
+        return "edit";
+    }
+
+    @PostMapping("/dictionaryList/{idDictionary}/{idTheme}/{idWord}/edit")
+    public String editWord(Model model, @PathVariable long idDictionary, @PathVariable long idTheme, @ModelAttribute("newWord") Word word) {
+        try {
+            Word newWord = wordService.addWord(word);
+            return "redirect:/dictionaryList/" +idDictionary+"/"+idTheme+"/"+ newWord.getIdWord();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("wordEdit", true);
+            model.addAttribute("add", true);
+            model.addAttribute("dictionary", dictionaryService.getDictionaryById(idDictionary));
+            return "list";
+        }
+    }
+
+    @GetMapping(value = {"/dictionaryList/{dictionaryId}/{idTheme}}/{idWord}/delete"})
+    public String deleteWord(
+            Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        Theme theme = null;
+        try {
+            theme = themeService.getThemeById(idTheme);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
+        model.addAttribute("themeElement", true);
+        model.addAttribute("allowDelete", true);
+        model.addAttribute("theme", theme);
+        return "list";
+    }
+
+    @PostMapping(value = {"/dictionaryList/{dictionaryId}/{idTheme}}/{idWord}/delete"})
+    public String deleteWordById(
             Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
         try {
             themeService.deleteThemeById(idTheme);

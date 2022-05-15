@@ -1,132 +1,221 @@
 {{> header}}
 {{#dictionaryList}}
 <div>
-    <table border="1">
-        <tr>
-            <th>Id</th>
-            <th>Уровень</th>
-            <th>Изменить</th>
-            <th>Удалить</th>
-        </tr>
-        {{#dictionarys}}
-            <tr>
-                <td><a href="/dictionaryList/{{idDictionary}}">{{idDictionary}}</a></td> 
-                <td><a href="/dictionaryList/{{idDictionary}}">{{difficultyLevel}}</a></td> 
-                <td><a href="/dictionaryList/{{idDictionary}}/edit">Edit</a></td> 
-                <td><a href="/dictionaryList/{{idDictionary}}/delete">Delete</a></td> 
-            </tr>
-        {{/dictionarys}}
-    </table>
-    <a href="/dictionaryList/add">Добавить словарь</a> |
+  <table border="1">
+    <tr>
+      <th>Id</th>
+      <th>Уровень</th>
+      <th>Изменить</th>
+      <th>Удалить</th>
+    </tr>
+    {{#dictionarys}}
+    <tr>
+      <td>
+        <a href="/dictionaryList/{{ idDictionary }}">{{ idDictionary }}</a>
+      </td>
+      <td>
+        <a href="/dictionaryList/{{ idDictionary }}">{{ difficultyLevel }}</a>
+      </td>
+      <td><a href="/dictionaryList/{{ idDictionary }}/edit">Edit</a></td>
+      <td><a href="/dictionaryList/{{ idDictionary }}/delete">Delete</a></td>
+    </tr>
+    {{/dictionarys}}
+  </table>
+  <a href="/dictionaryList/add">Добавить словарь</a>
 </div>
 {{/dictionaryList}}
 
 {{#dictionaryElement}}
-<h1>View dictionary</h1>
+<h1>Словари</h1>
 <a href="/dictionaryList">Back to Task List</a>
-<br/><br/>
+<br /><br />
 {{#dictionary}}
-    <table border="0">
-        <tr>
-            <td>Id</td>
-            <td>:</td>
-            <td>{{dictionary.idDictionary}}</td>
-        </tr>
-         <tr>
-            <td>Название словаря</td>
-            <td>:</td>
-            <td>{{dictionary.difficultyLevel}}</td>
-        </tr>
-    </table>
-    <br/><br/>
-    {{#allowDelete}}
-        <form action="/dictionaryList/{{dictionary.idDictionary}}/delete" method="POST">
-            Delete this task? <input type="submit" value="Yes" />
-        </form>
-    {{/allowDelete}}
-    {{^allowDelete}}
-        <div>
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/edit">Edit</a> 
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/delete">Delete</a>
-        </div>
-    {{/allowDelete}}
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>:</td>
+    <td>{{ dictionary.idDictionary }}</td>
+  </tr>
+  <tr>
+    <td>Название словаря</td>
+    <td>:</td>
+    <td>{{ dictionary.difficultyLevel }}</td>
+  </tr>
+</table>
+<br /><br />
+{{#allowDelete}}
+<form
+  action="/dictionaryList/{{ dictionary.idDictionary }}/delete"
+  method="POST"
+>
+  Delete this task? <input type="submit" value="Yes" />
+</form>
+{{/allowDelete}}
+{{^allowDelete}}
+<div>
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/edit">Edit</a>
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/delete">Delete</a>
+</div>
+{{/allowDelete}}
 {{/dictionary}}
 <div>
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/add">Добавить тему</a> 
-        </div>
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/add">Добавить тему</a>
+</div>
 
-    Темы словаря
-    <table border="0">
-        <tr>
-            <td>Id</td>
-            <td>ID словаря</td>
-            <td>Название темы</td>
-        </tr>
-        {{#themes}}
-         <tr>
-            <td><a href="/dictionaryList/{{dictionary.idDictionary}}/{{idTheme}}">{{idTheme}}</a> </td>
-            <td>{{idDictionary}}</td>
-            <td>{{theme}}</td>
-        </tr>
-        
-{{/themes}}
-    </table>
+Темы словаря
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>ID словаря</td>
+    <td>Название темы</td>
+  </tr>
+  {{#themes}}
+  <tr>
+    <td>
+      <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}">{{
+        idTheme
+      }}</a>
+    </td>
+    <td>{{ idDictionary }}</td>
+    <td>{{ theme }}</td>
+  </tr>
+
+  {{/themes}}
+</table>
 {{/dictionaryElement}}
 
 {{#themeElement}}
 <h1>Просмотр темы</h1>
-<a href="/dictionaryList/{{dictionary.idDictionary}}">Назад к списку тем</a>
-<br/><br/>
+<a href="/dictionaryList/{{ dictionary.idDictionary }}">Назад к списку тем</a>
+<br /><br />
 {{#theme}}
-    <table border="0">
-        <tr>
-            <td>Id</td>
-            <td>:</td>
-            <td>{{idTheme}}</td>
-        </tr>
-        <tr>
-            <td>название словаря</td>
-            <td>:</td>
-            <td>{{dictionary.difficultyLevel}}</td>
-        </tr>
-         <tr>
-            <td>Название темы</td>
-            <td>:</td>
-            <td>{{theme}}</td>
-        </tr>
-    </table>
-    <br/><br/>
-    {{#allowDelete}}
-        <form action="/dictionaryList/{{dictionary.idDictionary}}/{{idTheme}}/delete" method="POST">
-            Delete this task? <input type="submit" value="Yes" />
-        </form>
-    {{/allowDelete}}
-    {{^allowDelete}}
-        <div>
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/{{idTheme}}/edit">Edit</a> |
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/{{idTheme}}/delete">Delete</a>
-        </div>
-    {{/allowDelete}}
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>:</td>
+    <td>{{ idTheme }}</td>
+  </tr>
+  <tr>
+    <td>название словаря</td>
+    <td>:</td>
+    <td>{{ dictionary.difficultyLevel }}</td>
+  </tr>
+  <tr>
+    <td>Название темы</td>
+    <td>:</td>
+    <td>{{ theme }}</td>
+  </tr>
+</table>
+<br /><br />
+{{#allowDelete}}
+<form
+  action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
+  method="POST"
+>
+  Delete this task? <input type="submit" value="Yes" />
+</form>
+{{/allowDelete}}
+{{^allowDelete}}
+<div>
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/edit"
+    >Edit</a
+  >
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
+    >Delete</a
+  >
+</div>
+{{/allowDelete}}
 {{/theme}}
 <div>
-            <a href="/dictionaryList/{{dictionary.idDictionary}}/addWord">Добавить слова</a> |
-        </div>
+  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/add"
+    >Добавить слова</a
+  >
+</div>
 
-    Слова словаря
-    <table border="0">
-        <tr>
-            <td>Id</td>
-            <td>ID словаря</td>
-            <td>Название темы</td>
-        </tr>
-        {{#theme}}
-         <tr>
-            <td>{{idTheme}}</td>
-            <td>{{idDictionary}}</td>
-            <td>{{theme}}</td>
-        </tr>
-        
-{{/theme}}
-    </table>
+Слова темы
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>Название словаря</td>
+    <td>Название темы</td>
+    <td>Слово</td>
+    <td>Транскрипция</td>
+    <td>Перевод</td>
+  </tr>
+  {{#words}}
+  <tr>
+    <td>{{ idTheme}}</td>
+  </tr>
+  {{/words}}
+</table>
 {{/themeElement}}
+{{#wordElement}}
+<h1>Просмотр темы</h1>
+<a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}"
+  >Назад к списку слов</a
+>
+<br /><br />
+{{#word}}
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>:</td>
+    <td>{{ idWord }}</td>
+  </tr>
+  <tr>
+    <td>название словаря</td>
+    <td>:</td>
+    <td>{{ dictionary.difficultyLevel }}</td>
+  </tr>
+  <tr>
+    <td>Название темы</td>
+    <td>:</td>
+    <td>{{ theme.theme }}</td>
+  </tr>
+  <tr>
+    <td>Слово</td>
+    <td>:</td>
+    <td>{{ word }}</td>
+  </tr>
+  <tr>
+    <td>Транскрипция</td>
+    <td>:</td>
+    <td>{{ transcription }}</td>
+  </tr>
+  <tr>
+    <td>Перевод</td>
+    <td>:</td>
+    <td>{{ translate }}</td>
+  </tr>
+</table>
+<br /><br />
+{{#allowDelete}}
+<form
+  action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+    idWord
+  }}/delete"
+  method="POST"
+>
+  Удалить это слово? <input type="submit" value="Yes" />
+</form>
+{{/allowDelete}}
+{{^allowDelete}}
+<div>
+  <a
+    href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+      idWord
+    }}/edit"
+    >Изменить</a
+  >
+  <a
+    href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+      idWord
+    }}/delete"
+    >Удалить</a
+  >
+</div>
+{{/allowDelete}}
+{{/word}}
+<div></div>
+{{/wordElement}}
 {{> footer}}
