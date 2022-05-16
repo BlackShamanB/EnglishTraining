@@ -1,17 +1,22 @@
-package com.example.zubarev.englishtraining.englishtraining.service;
+// package com.example.zubarev.englishtraining.englishtraining.service;
 
-import java.util.Optional;
+// import java.util.List;
 
-import com.example.zubarev.englishtraining.englishtraining.model.User;
+// import com.example.zubarev.englishtraining.englishtraining.model.User;
 
-public interface UserService {
-    public User addUser(User user);
-    public void deleteUser(User user);
-    public User changeUser(User user);
-    public Iterable<User> getAll();
-    public Optional<User> getUser(Long id);
-    public User getName(String name);
-    public User getUser(User user);
-    public void deleteUserId(Long id);
-    public Long count();
-}
+// import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+// public interface UserService {
+//     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
+//     public User findUserById(Long userId);
+
+//     public List<User> allUsers();
+
+//     public boolean saveUser(User user);
+
+//     public boolean deleteUser(Long userId);
+
+//     public List<User> usergtList(Long idMin);
+// }

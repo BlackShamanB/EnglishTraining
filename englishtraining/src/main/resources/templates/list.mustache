@@ -112,7 +112,7 @@
   action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
   method="POST"
 >
-  Delete this task? <input type="submit" value="Yes" />
+  Удалить слово? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
 {{^allowDelete}}
@@ -130,6 +130,13 @@
   <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/add"
     >Добавить слова</a
   >
+  
+
+
+<form class="form-horizontal" id="form_table" action="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/addExcel" enctype="multipart/form-data" method="post">
+  <button type="submit" class="btn btn-primary">Импортировать</button>
+  <input class="form-input" type="file" name="file"></input>
+</form>
 </div>
 
 Слова темы
@@ -144,7 +151,13 @@
   </tr>
   {{#words}}
   <tr>
-    <td>{{ idTheme}}</td>
+    <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/edit">{{ idWord}}</a></td>
+    <td>{{ dictionary.difficultyLevel}}</td>
+    <td>{{ theme.theme}}</td>
+    <td>{{ word}}</td>
+    <td>{{ transcription}}</td>
+    <td>{{ translate}}</td>
+    <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/delete">Удалить</a></td>
   </tr>
   {{/words}}
 </table>
@@ -184,6 +197,11 @@
   </tr>
   <tr>
     <td>Перевод</td>
+    <td>:</td>
+    <td>{{ translate }}</td>
+  </tr>
+  <tr>
+    <td>Удалить</td>
     <td>:</td>
     <td>{{ translate }}</td>
   </tr>

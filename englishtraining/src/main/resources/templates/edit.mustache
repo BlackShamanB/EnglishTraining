@@ -57,14 +57,14 @@
 <a href="/dictionaryList/{{idDictionary}}/{{idTheme}}">Назад к списку тем</a>
 <br /><br />
 <form
-    action="{{#add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{idWord}}/add{{/add}}{{^add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{idWord}}/edit{{/add}}"
+    action="{{#add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/add{{/add}}{{^add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{word.idWord}}/edit{{/add}}"
     name="newWord" method="POST">
     <table border="0">
         {{#word.idWord}}
         <tr>
             <td>id</td>
             <td>:</td>
-            <td>{{word.idWord}}</td>
+            <td name="idWord">{{word.idWord}}</td>
         </tr>
         {{/word.idWord}}
         <input type="hidden" name="idTheme" value="{{idTheme}}" />
