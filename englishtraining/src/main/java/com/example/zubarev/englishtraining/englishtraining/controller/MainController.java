@@ -197,7 +197,7 @@ public class MainController {
         model.addAttribute("theme", theme);
         model.addAttribute("themeElement", "true");
         model.addAttribute("dictionary", dictionaryService.getDictionaryById(dictionaryId));
-        model.addAttribute("words", wordService.getAll());
+        model.addAttribute("words", wordService.getWordsByThemeId(themeId));
         return "list";
     }
 
@@ -386,5 +386,22 @@ public class MainController {
 
             return "list";
         }
+    }
+
+    @GetMapping(value = { "/training" })
+    public String training(Model model) {
+        
+        model.addAttribute("theme", themeService.getAll());
+        model.addAttribute("dictionary", dictionaryService.getAll());
+        model.addAttribute("changeTraining", true);
+        return "training";
+    }
+    @GetMapping(value = { "/training/{idTheme}" })
+    public String trainingTheme(Model model, @PathVariable long idTheme) {
+        
+        model.addAttribute("theme", themeService.getAll());
+        model.addAttribute("words", wordService.getWordsByThemeId(idTheme));
+        model.addAttribute("training", true);
+        return "training";
     }
 }

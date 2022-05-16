@@ -1,0 +1,71 @@
+{{>header}}
+<style>
+    .word {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+</style>
+{{#changeTraining}}
+<table>
+    <tr>
+        <td>idDictionary</td>
+        <td>:</td>
+    </tr>
+    {{#theme}}
+    <tr>
+        <td>{{theme}}</td>
+        <td></td>
+        <td><a href="/training/{{idTheme}}">Тренировка</a></td>
+    </tr>
+    {{/theme}}
+</table>
+{{/changeTraining}}
+{{#training}}
+{{#words}}
+<div class="word">{{word}}</div>
+{{/words}}
+{{/training}}
+<script>
+    var right = 0,
+        wrong = 0,
+        forgot = 0,
+        exclude = 0;
+
+        var i = 0;
+    words = document.querySelectorAll('.word');
+    words[0].classList.add('active');
+    window.addEventListener("keydown", (e) => {
+        console.log(e.key)
+        console.log(i);
+        if(i<words.length){
+       if(e.key== 'ArrowUp'){ right++;
+                words[i].classList.remove('active');
+                i++;
+                words[i].classList.add('active');
+        }
+        else if(e.key== 'ArrowDown'){ 
+            wrong++;
+                words[i].classList.remove('active');
+                i++;
+                words[i].classList.add('active');
+        }else if(e.key== 'ArrowLeft'){ 
+            forgot++;
+                words[i].classList.remove('active');
+                i++;
+                words[i].classList.add('active');
+        }else if(e.key== 'ArrowRight'){ 
+            exclude++;
+                words[i].classList.remove('active');
+                i++;
+                words[i].classList.add('active');
+        }
+    }
+        else{
+            alert('Правильно: '+right+'\nНе правильно'+wrong+'\nНе поимню'+forgot+'\nУдалить из тренировки'+exclude);
+            location="/training"
+        }
+    })
+</script>

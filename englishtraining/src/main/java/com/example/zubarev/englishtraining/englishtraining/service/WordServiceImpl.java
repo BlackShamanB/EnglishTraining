@@ -96,4 +96,10 @@ public class WordServiceImpl implements WordService{
         // Возвращает сколько строк вставлено
     }
 
+    @Override
+    public Iterable<Word> getWordsByThemeId(Long idTheme) {
+        // TODO Auto-generated method stub
+        return wordRepos.findByIdTheme(idTheme);
+    }
+
 }

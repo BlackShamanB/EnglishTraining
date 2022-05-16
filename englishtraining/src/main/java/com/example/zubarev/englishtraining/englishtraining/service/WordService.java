@@ -12,4 +12,5 @@ public interface WordService {
     public Word getWordById(long idWord);
     public void deleteWordById(long idWord);
     public void addWordsFromXLS(MultipartFile file, Long idTheme) throws IOException;
+    public Iterable<Word> getWordsByThemeId(Long idTheme);
 }
