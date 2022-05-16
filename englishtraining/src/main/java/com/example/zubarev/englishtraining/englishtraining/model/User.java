@@ -1,78 +1,37 @@
 package com.example.zubarev.englishtraining.englishtraining.model;
 
-import java.util.Collection;
+import javax.persistence.*;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 @Entity
-@Table(name = "t_user")
-public class User{
+@Table(name = "usr")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idUser;
-    private String email;
+    private Long id;
+    private String username;
     private String password;
-    private String passwordConfirm;
-    private String name;
-    private String phoneNumber;
-    private String gender;
-    private int age;
+    private boolean active;
 
-    private Long idLevelOfEducation;
-    private Long idFieldOfActivity;
-    private Long idLanguageProficiency;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
-    public User() {
+    public Long getId() {
+        return id;
     }
 
-    public User(String name) {
-        this.name = name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public User(String password, String passwordConfirm, String name) {
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.name = name;
+    public String getUsername() {
+        return username;
     }
 
-    public User(String email, String password, String passwordConfirm, String name,
-            String phoneNumber, String gender, int age, Long idLevelOfEducation, Long idFieldOfActivity,
-            Long idLanguageProficiency) {
-        this.email = email;
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.age = age;
-        this.idLevelOfEducation = idLevelOfEducation;
-        this.idFieldOfActivity = idFieldOfActivity;
-        this.idLanguageProficiency = idLanguageProficiency;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -83,69 +42,19 @@ public class User{
         this.password = password;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public String getName() {
-        return name;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Long getIdLevelOfEducation() {
-        return idLevelOfEducation;
-    }
-
-    public void setIdLevelOfEducation(Long idLevelOfEducation) {
-        this.idLevelOfEducation = idLevelOfEducation;
-    }
-
-    public Long getIdFieldOfActivity() {
-        return idFieldOfActivity;
-    }
-
-    public void setIdFieldOfActivity(Long idFieldOfActivity) {
-        this.idFieldOfActivity = idFieldOfActivity;
-    }
-
-    public Long getIdLanguageProficiency() {
-        return idLanguageProficiency;
-    }
-
-    public void setIdLanguageProficiency(Long idLanguageProficiency) {
-        this.idLanguageProficiency = idLanguageProficiency;
-    }
-
-   
 }

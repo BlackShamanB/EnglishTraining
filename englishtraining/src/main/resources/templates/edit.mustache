@@ -2,9 +2,9 @@
 
 {{#dictionaryEdit}}
 <h1>{{#add}}Создать новый словарь:{{/add}}{{^add}}Изменить словарь:{{/add}}</h1>
-<a href="/dictionaryList">Назад к списку словарей</a>
+<a href="/admin/dictionaryList">Назад к списку словарей</a>
 <br /><br />
-<form action="{{#add}}/dictionaryList/add{{/add}}{{^add}}/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}"
+<form action="{{#add}}/admin/dictionaryList/add{{/add}}{{^add}}/admin/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}"
     name="dictionary" method="POST">
     <table border="0">
         {{#dictionary.idDictionary}}
@@ -22,16 +22,16 @@
             </td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/dictionaryEdit}}
 
 {{#themeEdit}}
 <h1>{{#add}}Создать новую тему:{{/add}}{{^add}}Изменить тему:{{/add}}</h1>
-<a href="/dictionaryList/{{dictionaryId}}">Назад к списку тем</a>
+<a href="/admin/dictionaryList/{{dictionaryId}}">Назад к списку тем</a>
 <br /><br />
 <form
-    action="{{#add}}/dictionaryList/{{dictionaryId}}/add{{/add}}{{^add}}/dictionaryList/{{dictionaryId}}/{{theme.idTheme}}/edit{{/add}}"
+    action="{{#add}}/admin/dictionaryList/{{dictionaryId}}/add{{/add}}{{^add}}/admin/dictionaryList/{{dictionaryId}}/{{theme.idTheme}}/edit{{/add}}"
     name="newTheme" method="POST">
     <table border="0">
         {{#theme.idTheme}}
@@ -48,16 +48,16 @@
             <td><input type="text" name="theme" value="{{#theme.theme}}{{theme.theme}}{{/theme.theme}}" /></td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/themeEdit}}
 
 {{#wordEdit}}
 <h1>{{#add}}Добавить новое слово:{{/add}}{{^add}}Изменить слово:{{/add}}</h1>
-<a href="/dictionaryList/{{idDictionary}}/{{idTheme}}">Назад к списку тем</a>
+<a href="/admin/dictionaryList/{{idDictionary}}/{{idTheme}}">Назад к списку тем</a>
 <br /><br />
 <form
-    action="{{#add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/add{{/add}}{{^add}}/dictionaryList/{{idDictionary}}/{{idTheme}}/{{word.idWord}}/edit{{/add}}"
+    action="{{#add}}/admin/dictionaryList/{{idDictionary}}/{{idTheme}}/add{{/add}}{{^add}}/admin/dictionaryList/{{idDictionary}}/{{idTheme}}/{{word.idWord}}/edit{{/add}}"
     name="newWord" method="POST">
     <table border="0">
         {{#word.idWord}}
@@ -84,7 +84,7 @@
             <td><input type="text" name="translate" value="{{#word.translate}}{{word.translate}}{{/word.translate}}" /></td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/wordEdit}}
 <br />

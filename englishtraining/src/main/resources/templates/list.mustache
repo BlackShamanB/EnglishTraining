@@ -11,23 +11,23 @@
     {{#dictionarys}}
     <tr>
       <td>
-        <a href="/dictionaryList/{{ idDictionary }}">{{ idDictionary }}</a>
+        <a href="/admin/dictionaryList/{{ idDictionary }}">{{ idDictionary }}</a>
       </td>
       <td>
-        <a href="/dictionaryList/{{ idDictionary }}">{{ difficultyLevel }}</a>
+        <a href="/admin/dictionaryList/{{ idDictionary }}">{{ difficultyLevel }}</a>
       </td>
-      <td><a href="/dictionaryList/{{ idDictionary }}/edit">Edit</a></td>
-      <td><a href="/dictionaryList/{{ idDictionary }}/delete">Delete</a></td>
+      <td><a href="/admin/dictionaryList/{{ idDictionary }}/edit">Edit</a></td>
+      <td><a href="/admin/dictionaryList/{{ idDictionary }}/delete">Delete</a></td>
     </tr>
     {{/dictionarys}}
   </table>
-  <a href="/dictionaryList/add">Добавить словарь</a>
+  <a href="/admin/dictionaryList/add">Добавить словарь</a>
 </div>
 {{/dictionaryList}}
 
 {{#dictionaryElement}}
 <h1>Словари</h1>
-<a href="/dictionaryList">Back to Task List</a>
+<a href="/admin/dictionaryList">Back to Task List</a>
 <br /><br />
 {{#dictionary}}
 <table border="0">
@@ -45,21 +45,21 @@
 <br /><br />
 {{#allowDelete}}
 <form
-  action="/dictionaryList/{{ dictionary.idDictionary }}/delete"
+  action="/admin/dictionaryList/{{ dictionary.idDictionary }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Delete this task? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
 {{^allowDelete}}
 <div>
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/edit">Edit</a>
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/delete">Delete</a>
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/edit">Edit</a>
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/delete">Delete</a>
 </div>
 {{/allowDelete}}
 {{/dictionary}}
 <div>
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/add">Добавить тему</a>
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/add">Добавить тему</a>
 </div>
 
 Темы словаря
@@ -72,7 +72,7 @@
   {{#themes}}
   <tr>
     <td>
-      <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}">{{
+      <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}">{{
         idTheme
       }}</a>
     </td>
@@ -86,7 +86,7 @@
 
 {{#themeElement}}
 <h1>Просмотр темы</h1>
-<a href="/dictionaryList/{{ dictionary.idDictionary }}">Назад к списку тем</a>
+<a href="/admin/dictionaryList/{{ dictionary.idDictionary }}">Назад к списку тем</a>
 <br /><br />
 {{#theme}}
 <table border="0">
@@ -109,33 +109,33 @@
 <br /><br />
 {{#allowDelete}}
 <form
-  action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
+  action="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Удалить слово? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
 {{^allowDelete}}
 <div>
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/edit"
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/edit"
     >Edit</a
   >
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
     >Delete</a
   >
 </div>
 {{/allowDelete}}
 {{/theme}}
 <div>
-  <a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/add"
+  <a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/add"
     >Добавить слова</a
   >
   
 
 
-<form class="form-horizontal" id="form_table" action="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/addExcel" enctype="multipart/form-data" method="post">
+<form class="form-horizontal" id="form_table" action="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/addExcel" enctype="multipart/form-data" method="post">
   <button type="submit" class="btn btn-primary">Импортировать</button>
-  <input class="form-input" type="file" name="file"></input>
+  <input class="form-input" type="file" name="file"></input><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 </div>
 
@@ -151,20 +151,20 @@
   </tr>
   {{#words}}
   <tr>
-    <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/edit">{{ idWord}}</a></td>
+    <td><a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/edit">{{ idWord}}</a></td>
     <td>{{ dictionary.difficultyLevel}}</td>
     <td>{{ theme.theme}}</td>
     <td>{{ word}}</td>
     <td>{{ transcription}}</td>
     <td>{{ translate}}</td>
-    <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/delete">Удалить</a></td>
+    <td><a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/delete">Удалить</a></td>
   </tr>
   {{/words}}
 </table>
 {{/themeElement}}
 {{#wordElement}}
 <h1>Просмотр темы</h1>
-<a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}"
+<a href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}"
   >Назад к списку слов</a
 >
 <br /><br />
@@ -209,24 +209,24 @@
 <br /><br />
 {{#allowDelete}}
 <form
-  action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+  action="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
     idWord
   }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Удалить это слово? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
 {{^allowDelete}}
 <div>
   <a
-    href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+    href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
       idWord
     }}/edit"
     >Изменить</a
   >
   <a
-    href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
+    href="/admin/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{
       idWord
     }}/delete"
     >Удалить</a
