@@ -10,18 +10,30 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
+import com.example.zubarev.englishtraining.englishtraining.model.Role;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
+import com.example.zubarev.englishtraining.englishtraining.model.Training;
+import com.example.zubarev.englishtraining.englishtraining.model.User;
 import com.example.zubarev.englishtraining.englishtraining.model.Word;
+import com.example.zubarev.englishtraining.englishtraining.repos.TrainingRepos;
+import com.example.zubarev.englishtraining.englishtraining.repos.UserRepo;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
 import com.example.zubarev.englishtraining.englishtraining.service.LevelOfEducationService;
 import com.example.zubarev.englishtraining.englishtraining.service.ThemeService;
+import com.example.zubarev.englishtraining.englishtraining.service.TrainingService;
 import com.example.zubarev.englishtraining.englishtraining.service.WordService;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +42,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -39,25 +52,41 @@ public class MainController {
     private ThemeService themeService;
     private WordService wordService;
     private LevelOfEducationService levelOfEducationService;
-
-    static {
-        // users.add(new User("Bill"));
-        // users.add(new User("Steve"));
-
-    }
+    private UserRepo userRepo;
+    private TrainingService trainingService;
 
     public MainController(DictionaryService dictionaryService, ThemeService themeService,
             WordService wordSercive,
-            LevelOfEducationService levelOfEducationService) {
+            LevelOfEducationService levelOfEducationService, UserRepo userRepo, TrainingService trainingService) {
         this.dictionaryService = dictionaryService;
         this.themeService = themeService;
         this.wordService = wordSercive;
         this.levelOfEducationService = levelOfEducationService;
+        this.userRepo = userRepo;
+        this.trainingService = trainingService;
     }
 
+    public void getUser(Model model) {
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();// get logged in username
+            User user = (User) userRepo.findByUsername(name);
+            model.addAttribute("user", user);
+            if (user != null) {
+                if (user.getRoles().toString().equals(Collections.singleton(Role.USER).toString())) {
+                    model.addAttribute("role_user", true);
+                } else {
+                    model.addAttribute("role_admin", true);
+                }
+            }
+            String role = auth.getAuthorities().toString();
+            model.addAttribute("role", role);
+        }
+    }
 
     @GetMapping("/dictionaryList")
     public String dictionaryList(Model model) {
+        getUser(model);
         model.addAttribute("dictionaryList", true);
         model.addAttribute("dictionarys", dictionaryService.getAll());
         return "list";
@@ -65,6 +94,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/add")
     public String dictionaryListAdd(Model model) {
+        getUser(model);
         Dictionary dictionary = new Dictionary();
         model.addAttribute("add", true);
         model.addAttribute("dictionaryEdit", "true");
@@ -72,8 +102,9 @@ public class MainController {
         return "edit";
     }
 
-    @PostMapping("dictionaryList/add")
+    @PostMapping("/dictionaryList/add")
     public String addTask(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
+        getUser(model);
         try {
             Dictionary newDictionary = dictionaryService.addDictionary(dictionary);
             return "redirect:/dictionaryList/" + newDictionary.getIdDictionary();
@@ -89,6 +120,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{dictionaryId}")
     public String dictionaryBuId(Model model, @PathVariable long dictionaryId) {
+        getUser(model);
         Dictionary dictionary = null;
         try {
             dictionary = dictionaryService.getDictionaryById(dictionaryId);
@@ -104,6 +136,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{dictionaryId}/edit")
     public String showEditDictionary(Model model, @PathVariable long dictionaryId) {
+        getUser(model);
         Dictionary dictionary = null;
         try {
             dictionary = dictionaryService.getDictionaryById(dictionaryId);
@@ -118,6 +151,7 @@ public class MainController {
 
     @PostMapping("/dictionaryList/{idDictionary}/edit")
     public String editDictionary(Model model, @ModelAttribute("dictionary") Dictionary dictionary) {
+        getUser(model);
         try {
             Dictionary newDictionary = dictionaryService.addDictionary(dictionary);
             return "redirect:/dictionaryList/" + newDictionary.getIdDictionary();
@@ -134,6 +168,7 @@ public class MainController {
     @GetMapping(value = { "/dictionaryList/{dictionaryId}/delete" })
     public String showDeleteTask(
             Model model, @PathVariable long dictionaryId) {
+        getUser(model);
         Dictionary dictionary = null;
         try {
             dictionary = dictionaryService.getDictionaryById(dictionaryId);
@@ -149,6 +184,7 @@ public class MainController {
     @PostMapping(value = { "/dictionaryList/{dictionayId}/delete" })
     public String deleteDictionaryById(
             Model model, @PathVariable long dictionayId) {
+        getUser(model);
         try {
             dictionaryService.deleteDictionaryById(dictionayId);
             return "redirect:/dictionaryList";
@@ -162,6 +198,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{dictionaryId}/add")
     public String themeAdd(Model model, @PathVariable long dictionaryId) {
+        getUser(model);
         Theme theme = new Theme();
         model.addAttribute("add", true);
         model.addAttribute("themeEdit", "true");
@@ -172,6 +209,7 @@ public class MainController {
 
     @PostMapping("/dictionaryList/{dictionaryId}/add")
     public String addTheme(Model model, @ModelAttribute("newTheme") Theme theme) {
+        getUser(model);
         try {
             Theme newTheme = themeService.addTheme(theme);
             return "redirect:/dictionaryList/{dictionaryId}/" + newTheme.getIdTheme();
@@ -187,6 +225,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{dictionaryId}/{themeId}")
     public String themeById(Model model, @PathVariable long dictionaryId, @PathVariable long themeId) {
+        getUser(model);
         Theme theme = null;
         try {
             theme = themeService.getThemeById(themeId);
@@ -203,6 +242,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{dictionaryId}/{idTheme}/edit")
     public String editTheme(Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        getUser(model);
         Dictionary dictionary = null;
         Theme theme = null;
         try {
@@ -220,6 +260,7 @@ public class MainController {
 
     @PostMapping("/dictionaryList/{idDictionary}/{idTheme}/edit")
     public String editTheme(Model model, @PathVariable long idDictionary, @ModelAttribute("newTheme") Theme theme) {
+        getUser(model);
         try {
             Theme newTheme = themeService.addTheme(theme);
             return "redirect:/dictionaryList/" + idDictionary + "/" + newTheme.getIdTheme();
@@ -237,6 +278,7 @@ public class MainController {
     @GetMapping(value = { "/dictionaryList/{dictionaryId}/{idTheme}/delete" })
     public String deleteTheme(
             Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        getUser(model);
         Theme theme = null;
         try {
             theme = themeService.getThemeById(idTheme);
@@ -253,6 +295,7 @@ public class MainController {
     @PostMapping(value = { "/dictionaryList/{dictionaryId}/{idTheme}/delete" })
     public String deleteThemeById(
             Model model, @PathVariable long dictionaryId, @PathVariable long idTheme) {
+        getUser(model);
         try {
             themeService.deleteThemeById(idTheme);
             return "redirect:/dictionaryList/" + dictionaryId;
@@ -269,6 +312,7 @@ public class MainController {
     @GetMapping("/dictionaryList/{idDictionary}/{idTheme}/{idWord}")
     public String wordById(Model model, @PathVariable long idDictionary, @PathVariable long idTheme,
             @PathVariable long idWord) {
+        getUser(model);
         Word word = null;
         try {
             word = wordService.getWordById(idWord);
@@ -285,6 +329,7 @@ public class MainController {
 
     @GetMapping("/dictionaryList/{idDictionary}/{idTheme}/add")
     public String wordAdd(Model model, @PathVariable long idDictionary, @PathVariable long idTheme) {
+        getUser(model);
         Word word = new Word(idTheme, "", "", "");
         model.addAttribute("add", true);
         model.addAttribute("wordEdit", "true");
@@ -296,6 +341,7 @@ public class MainController {
 
     @PostMapping("/dictionaryList/{dictionaryId}/{idTheme}/add")
     public String addWord(Model model, @ModelAttribute("newWord") Word word) {
+        getUser(model);
         try {
             Word newWord = wordService.addWord(word);
             return "redirect:/dictionaryList/{dictionaryId}/{idTheme}/" + newWord.getIdWord();
@@ -310,7 +356,8 @@ public class MainController {
     }
 
     @RequestMapping("/dictionaryList/{idDictionary}/{idTheme}/addExcel")
-    public String import2db(MultipartFile file, @PathVariable long idDictionary, @PathVariable long idTheme) throws Exception {
+    public String import2db(MultipartFile file, @PathVariable long idDictionary, @PathVariable long idTheme)
+            throws Exception {
         wordService.addWordsFromXLS(file, idTheme);
         return "redirect:/dictionaryList/{idDictionary}/{idTheme}/";
     }
@@ -318,6 +365,7 @@ public class MainController {
     @GetMapping("/dictionaryList/{idDictionary}/{idTheme}/{idWord}/edit")
     public String editWord(Model model, @PathVariable long idDictionary, @PathVariable long idTheme,
             @PathVariable long idWord) {
+        getUser(model);
         Dictionary dictionary = null;
         Theme theme = null;
         Word word = null;
@@ -339,6 +387,7 @@ public class MainController {
     @PostMapping("/dictionaryList/{idDictionary}/{idTheme}/{idWord}/edit")
     public String editWord(Model model, @PathVariable long idDictionary, @PathVariable long idTheme,
             @ModelAttribute("newWord") Word word) {
+        getUser(model);
         try {
             Word newWord = wordService.addWord(word);
             return "redirect:/dictionaryList/" + idDictionary + "/" + idTheme + "/" + newWord.getIdWord();
@@ -356,6 +405,7 @@ public class MainController {
     @GetMapping(value = { "/dictionaryList/{idDictionary}/{idTheme}/{idWord}/delete" })
     public String deleteWord(
             Model model, @PathVariable long idDictionary, @PathVariable long idTheme, @PathVariable long idWord) {
+        getUser(model);
         Word word = null;
         try {
             word = wordService.getWordById(idWord);
@@ -373,6 +423,7 @@ public class MainController {
     @PostMapping(value = { "/dictionaryList/{idDictionary}/{idTheme}/{idWord}/delete" })
     public String deleteWordById(
             Model model, @PathVariable long idDictionary, @PathVariable long idTheme, @PathVariable long idWord) {
+        getUser(model);
         try {
             wordService.deleteWordById(idWord);
             return "redirect:/dictionaryList/" + idDictionary + "/" + idTheme;
@@ -390,18 +441,76 @@ public class MainController {
 
     @GetMapping(value = { "/training" })
     public String training(Model model) {
-        
+        getUser(model);
+
         model.addAttribute("theme", themeService.getAll());
         model.addAttribute("dictionary", dictionaryService.getAll());
         model.addAttribute("changeTraining", true);
+
         return "training";
     }
+
+    @PostMapping(value = { "/saveTraining/" })
+    public String saveTraining(
+            Model model, @ModelAttribute("result") Training training) {
+        getUser(model);
+        Training newTraining= trainingService.addTraining(training);
+    
+            return "redirect:/stats";
+        
+    }
+
+    @GetMapping(value = { "/stats" })
+    public String trainingStats(Model model) {
+        getUser(model);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();// get logged in username
+        User user = (User) userRepo.findByUsername(name);
+        model.addAttribute("user", user);
+        if (user != null) {
+            if (user.getRoles().toString().equals(Collections.singleton(Role.USER).toString())) {
+                model.addAttribute("allTraining",  trainingService.getByIdUser(user.getId()));
+            } else {
+                model.addAttribute("allTraining", trainingService.getAll());
+            }
+        }
+        model.addAttribute("dictionary", dictionaryService.getAll());
+        model.addAttribute("trainingResult", true);
+
+        return "training";
+    }
+
     @GetMapping(value = { "/training/{idTheme}" })
     public String trainingTheme(Model model, @PathVariable long idTheme) {
-        
+        getUser(model);
         model.addAttribute("theme", themeService.getAll());
         model.addAttribute("words", wordService.getWordsByThemeId(idTheme));
         model.addAttribute("training", true);
         return "training";
+    }
+
+    @GetMapping("/")
+    public String greeting(Model model) {
+        getUser(model);
+        return "index";
+    }
+    @GetMapping("/themes")
+    public String themesUser(Model model) {
+        getUser(model);
+        model.addAttribute("themeElementUser", true);
+        model.addAttribute("theme", themeService.getAll());
+        model.addAttribute("dictionary", dictionaryService.getAll());
+        return "list";
+    }
+    @GetMapping("/themes/{idTheme}")
+    public String themeUser(Model model, @PathVariable long idTheme) {
+        getUser(model);
+        model.addAttribute("themElementUser", true);
+        model.addAttribute("theme", themeService.findByIdTheme(idTheme));
+        model.addAttribute("dictionary", dictionaryService.getAll());
+        model.addAttribute("words", wordService.getWordsByThemeId(idTheme));
+
+
+        return "list";
     }
 }

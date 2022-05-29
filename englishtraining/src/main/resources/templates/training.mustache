@@ -22,50 +22,117 @@
     </tr>
     {{/theme}}
 </table>
+
 {{/changeTraining}}
 {{#training}}
+<h2 style="text-align: center;">Тренировка</h2>
 {{#words}}
-<div class="word">{{word}}</div>
+<div class="word" style="text-align: center;">
+    <h1>{{word}}</h1>
+    <h1 class="translate" style="display: none;">{{translate}}</h1>
+</div>
 {{/words}}
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="col-12">↑ - правильно</div>
+    </div>
+    <div class="row">
+        <div class="col-4">← - забыл</div>
+        <div class="col-4">↓ - не правильно</div>
+        <div class="col-4">→ - убрать из словаря</div>
+    </div>
+</div>
+
+<form name="result" action="/saveTraining/" method="POST">
+    <div class="result">
+        <div class="right"></div>
+        <div class="wrong"></div>
+        <div class="forgot"></div>
+        <div class="exclude"></div>
+    </div>
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+    <input type="submit" value="Yes" />
+    <input type="hidden" name="startDateAndTime">
+    <input type="hidden" name="endDateAndTime">
+    <input type="hidden" name="idUser" value="{{user.id}}">
+    <input type="hidden" name="wordCount">
+    <input type="hidden" name="numberOfMistakes">
+</form>
 {{/training}}
+{{#trainingResult}}
+<table>
+    <tr>
+        <td>id тренировки</td>
+        <td>Имя пользователя</td>
+        <td>Начало тренировки</td>
+        <td>Конец тренировки</td>
+        <td>Количество слов</td>
+        <td>Количество ошибок</td>
+    </tr>
+    {{#allTraining}}
+    <tr>
+        <td>{{idTraining}}</td>
+        <td>{{#idUser}}{{idUser}}{{/idUser}}</td>
+        <td>{{#startDateAndTime}}{{startDateAndTime}}{{/startDateAndTime}}</td>
+        <td>{{#endDateAndTime}}{{endDateAndTime}}{{/endDateAndTime}}</td>
+        <td>{{#wordCount}}{{wordCount}}{{/wordCount}}</td>
+        <td>{{#numberOfMistakes}}{{numberOfMistakes}}{{/numberOfMistakes}}</td>
+    </tr>
+    {{/allTraining}}
+</table>
+{{/trainingResult}}
+
 <script>
     var right = 0,
         wrong = 0,
         forgot = 0,
         exclude = 0;
-
-        var i = 0;
+    document.querySelector('form').style = "display:none";
+    var i = 0;
+    document.querySelector("[name=startDateAndTime]").setAttribute("value", new Date())
     words = document.querySelectorAll('.word');
+    translates = document.querySelectorAll('.translate');
     words[0].classList.add('active');
+    translates[0].style.display = "none";
     window.addEventListener("keydown", (e) => {
         console.log(e.key)
-        console.log(i);
-        if(i<words.length){
-       if(e.key== 'ArrowUp'){ right++;
+        // console.log(i);
+        if(i >= words.length){
+            document.querySelector('.right').innerHTML = "Правильно: <span name=\"res-righ\">" + right + "</span>";
+            document.querySelector('.wrong').innerHTML = "Не правильно: <span name=\"res-wrong\">" + wrong + "</span>";
+            document.querySelector('.forgot').innerHTML = "Забыл: <span name=\"res-forgot\">" + forgot + "</span>";
+            document.querySelector('.exclude').innerHTML = "Исключить из списка: <span name=\"res-exclude\">" + exclude + "</span>";
+            document.querySelector("[name=endDateAndTime]").setAttribute("value", new Date());
+            document.querySelector("[name=wordCount]").setAttribute("value", right + wrong + forgot + exclude)
+            document.querySelector("[name=numberOfMistakes]").setAttribute("value", wrong)
+            document.querySelector('form').style = "display:block";
+
+        } else
+        if (translates[i].style.display == "block" && i < words.length) {
+            if (e.key == 'ArrowUp') {
+                right++;
                 words[i].classList.remove('active');
                 i++;
                 words[i].classList.add('active');
-        }
-        else if(e.key== 'ArrowDown'){ 
-            wrong++;
+            }
+            else if (e.key == 'ArrowDown') {
+                wrong++;
                 words[i].classList.remove('active');
                 i++;
                 words[i].classList.add('active');
-        }else if(e.key== 'ArrowLeft'){ 
-            forgot++;
+            } else if (e.key == 'ArrowLeft') {
+                forgot++;
                 words[i].classList.remove('active');
                 i++;
                 words[i].classList.add('active');
-        }else if(e.key== 'ArrowRight'){ 
-            exclude++;
+            } else if (e.key == 'ArrowRight') {
+                exclude++;
                 words[i].classList.remove('active');
                 i++;
                 words[i].classList.add('active');
-        }
-    }
-        else{
-            alert('Правильно: '+right+'\nНе правильно'+wrong+'\nНе поимню'+forgot+'\nУдалить из тренировки'+exclude);
-            location="/training"
+            }
+        } else if (translates[i].style.display == "none" && i < words.length && e.key==" ") {
+                translates[i].style.display="block";
         }
     })
 </script>

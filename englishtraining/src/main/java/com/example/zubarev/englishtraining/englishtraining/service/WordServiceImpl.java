@@ -65,25 +65,25 @@ public class WordServiceImpl implements WordService{
         if (sheet != null) {
             // Данные начинаются с третьего ряда, поэтому здесь они пересекаются с третьего
             // ряда
-            for (int line = 0; line <= sheet.getLastRowNum(); line++) {
+            for (int line = 0; line <= 3; line++) {
                 Word word = new Word();
                 Row row = sheet.getRow(line);
                 if (row == null)
                     continue;
                 // Определяем, является ли тип ячейки текстовым
-                if (1 != row.getCell(1).getCellType()) {
-                    continue;
-                }
+                // if (1 != row.getCell(1).getCellType()) {
+                //     continue;
+                // }
 
                 word.setWord(row.getCell(1).getStringCellValue());
-                if (1 != row.getCell(2).getCellType()) {
-                    continue;
-                }
+                // if (1 != row.getCell(2).getCellType()) {
+                //     continue;
+                // }
                 word.setTranscription(row.getCell(2).getStringCellValue());
 
-                if (1 != row.getCell(3).getCellType()) {
-                    continue;
-                }
+                // if (1 != row.getCell(3).getCellType()) {
+                //     continue;
+                // }
                 word.setTranslate(row.getCell(3).getStringCellValue());
                 word.setIdTheme(idTheme);
                 list.add(word);

@@ -22,7 +22,7 @@
             </td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/dictionaryEdit}}
 
@@ -48,7 +48,7 @@
             <td><input type="text" name="theme" value="{{#theme.theme}}{{theme.theme}}{{/theme.theme}}" /></td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/themeEdit}}
 
@@ -84,7 +84,7 @@
             <td><input type="text" name="translate" value="{{#word.translate}}{{word.translate}}{{/word.translate}}" /></td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 {{/wordEdit}}
 <br />

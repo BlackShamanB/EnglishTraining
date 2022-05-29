@@ -41,4 +41,11 @@ public class ThemeServiceImpl implements ThemeService{
     public void deleteThemeById(Long idTheme) {
         themeRepos.deleteById(idTheme);
     }
+
+    @Override
+    public Theme findByIdTheme(Long idTheme) {
+        Optional<Theme> theme = themeRepos.findById(idTheme);
+        return theme.orElse(null);
+        
+    }
 }

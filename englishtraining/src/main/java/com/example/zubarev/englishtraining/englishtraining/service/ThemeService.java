@@ -10,4 +10,5 @@ public interface ThemeService {
     public List<Theme> getByIdDictionary(Long idDictionary);
     public Theme addTheme(Theme theme);
     public void deleteThemeById(Long idTheme);
+    public Theme findByIdTheme(Long idTheme);
 }

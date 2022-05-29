@@ -47,7 +47,7 @@
 <form
   action="/dictionaryList/{{ dictionary.idDictionary }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Delete this task? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
@@ -111,7 +111,7 @@
 <form
   action="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Удалить слово? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
@@ -135,7 +135,7 @@
 
 <form class="form-horizontal" id="form_table" action="/dictionaryList/{{ dictionary.idDictionary }}/{{ theme.idTheme }}/addExcel" enctype="multipart/form-data" method="post">
   <button type="submit" class="btn btn-primary">Импортировать</button>
-  <input class="form-input" type="file" name="file"></input>
+  <input class="form-input" type="file" name="file"></input><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 </form>
 </div>
 
@@ -154,8 +154,8 @@
     <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/edit">{{ idWord}}</a></td>
     <td>{{ dictionary.difficultyLevel}}</td>
     <td>{{ theme.theme}}</td>
-    <td>{{ word}}</td>
-    <td>{{ transcription}}</td>
+    <td>{{ #word}}{{ word}}{{ /word}}</td>
+    <td>{{ #transcription}}{{ transcription}}{{ /transcription}}</td>
     <td>{{ translate}}</td>
     <td><a href="/dictionaryList/{{ dictionary.idDictionary }}/{{ idTheme }}/{{ idWord }}/delete">Удалить</a></td>
   </tr>
@@ -213,7 +213,7 @@
     idWord
   }}/delete"
   method="POST"
->
+><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
   Удалить это слово? <input type="submit" value="Yes" />
 </form>
 {{/allowDelete}}
@@ -236,4 +236,46 @@
 {{/word}}
 <div></div>
 {{/wordElement}}
+
+{{#themeElementUser}}
+<h1>Просмотр темы</h1>
+<br /><br />
+{{#theme}}
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>Название темы</td>
+  </tr>
+  <tr>
+    <td><a href="/themes/{{idTheme}}">{{ idTheme }}</a></td>
+    <td>{{ theme }}</td>
+  </tr>
+</table>
+<br /><br />
+{{/theme}}
+</table>
+{{/themeElementUser}}
+
+{{#themElementUser}}
+<a href="/themes">Назад</a>
+Слова темы
+<table border="0">
+  <tr>
+    <td>Id</td>
+    <td>Название словаря</td>
+    <td>Слово</td>
+    <td>Транскрипция</td>
+    <td>Перевод</td>
+  </tr>
+  {{#words}}
+  <tr>
+    <td>{{ idWord}}</td>
+    <td>{{ theme.theme}}</td>
+    <td>{{ #word}}{{ word}}{{ /word}}</td>
+    <td>{{ #transcription}}{{ transcription}}{{ /transcription}}</td>
+    <td>{{ translate}}</td>
+  </tr>
+  {{/words}}
+</table>
+{{/themElementUser}}
 {{> footer}}

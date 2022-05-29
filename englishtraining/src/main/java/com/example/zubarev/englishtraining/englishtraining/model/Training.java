@@ -14,28 +14,15 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idTraining;
     private Long idUser;
-    private Long idTrainingProfile;
+    // private Long idTrainingProfile;
     private Date startDateAndTime;
     private Date endDateAndTime;
     private int wordCount;
     private int numberOfMistakes;
-    private int numberOfRussianEnglish;
-    private int numberOfEnglishRussian;
+    // private int numberOfRussianEnglish;
+    // private int numberOfEnglishRussian;
     
     public Training() {
-    }
-
-    public Training(Long idUser, Long idTrainingProfile, Date startDateAndTime,
-    Date endDateAndTime, int wordCount, int numberOfMistakes, int numberOfRussianEnglish,
-            int numberOfEnglishRussian) {
-        this.idUser = idUser;
-        this.idTrainingProfile = idTrainingProfile;
-        this.startDateAndTime = startDateAndTime;
-        this.endDateAndTime = endDateAndTime;
-        this.wordCount = wordCount;
-        this.numberOfMistakes = numberOfMistakes;
-        this.numberOfRussianEnglish = numberOfRussianEnglish;
-        this.numberOfEnglishRussian = numberOfEnglishRussian;
     }
 
     public Long getIdTraining() {
@@ -54,13 +41,13 @@ public class Training {
         this.idUser = idUser;
     }
 
-    public Long getIdTrainingProfile() {
-        return idTrainingProfile;
-    }
+    // public Long getIdTrainingProfile() {
+    //     return idTrainingProfile;
+    // }
 
-    public void setIdTrainingProfile(Long idTrainingProfile) {
-        this.idTrainingProfile = idTrainingProfile;
-    }
+    // public void setIdTrainingProfile(Long idTrainingProfile) {
+    //     this.idTrainingProfile = idTrainingProfile;
+    // }
 
     public Date getStartDateAndTime() {
         return startDateAndTime;
@@ -94,19 +81,19 @@ public class Training {
         this.numberOfMistakes = numberOfMistakes;
     }
 
-    public int getNumberOfRussianEnglish() {
-        return numberOfRussianEnglish;
-    }
+    // public int getNumberOfRussianEnglish() {
+    //     return numberOfRussianEnglish;
+    // }
 
-    public void setNumberOfRussianEnglish(int numberOfRussianEnglish) {
-        this.numberOfRussianEnglish = numberOfRussianEnglish;
-    }
+    // public void setNumberOfRussianEnglish(int numberOfRussianEnglish) {
+    //     this.numberOfRussianEnglish = numberOfRussianEnglish;
+    // }
 
-    public int getNumberOfEnglishRussian() {
-        return numberOfEnglishRussian;
-    }
+    // public int getNumberOfEnglishRussian() {
+    //     return numberOfEnglishRussian;
+    // }
 
-    public void setNumberOfEnglishRussian(int numberOfEnglishRussian) {
-        this.numberOfEnglishRussian = numberOfEnglishRussian;
-    }
+    // public void setNumberOfEnglishRussian(int numberOfEnglishRussian) {
+    //     this.numberOfEnglishRussian = numberOfEnglishRussian;
+    // }
 }
