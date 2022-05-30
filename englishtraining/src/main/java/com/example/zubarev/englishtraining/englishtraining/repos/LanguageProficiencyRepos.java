@@ -5,5 +5,5 @@ import com.example.zubarev.englishtraining.englishtraining.model.LanguageProfici
 import org.springframework.data.repository.CrudRepository;
 
 public interface LanguageProficiencyRepos extends CrudRepository<LanguageProficiency,Long> {
-    
+    public Iterable<LanguageProficiency> findByIdLanguageProficiency(Long idLanguageProficiency);
 }

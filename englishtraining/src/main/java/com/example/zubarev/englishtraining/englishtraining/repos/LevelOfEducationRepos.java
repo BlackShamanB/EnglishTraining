@@ -5,5 +5,5 @@ import com.example.zubarev.englishtraining.englishtraining.model.LevelOfEducatio
 import org.springframework.data.repository.CrudRepository;
 
 public interface LevelOfEducationRepos extends CrudRepository<LevelOfEducation,Long> {
-    
+    public Iterable<LevelOfEducation> findByIdLevelOfEducation(Long idLevelOfEducation);
 }

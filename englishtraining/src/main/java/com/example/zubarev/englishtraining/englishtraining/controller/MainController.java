@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
+import com.example.zubarev.englishtraining.englishtraining.model.FieldOfActivity;
 import com.example.zubarev.englishtraining.englishtraining.model.Role;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
 import com.example.zubarev.englishtraining.englishtraining.model.Training;
@@ -26,6 +27,7 @@ import com.example.zubarev.englishtraining.englishtraining.model.Word;
 import com.example.zubarev.englishtraining.englishtraining.repos.TrainingRepos;
 import com.example.zubarev.englishtraining.englishtraining.repos.UserRepo;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
+import com.example.zubarev.englishtraining.englishtraining.service.LanguageProficiencyService;
 import com.example.zubarev.englishtraining.englishtraining.service.LevelOfEducationService;
 import com.example.zubarev.englishtraining.englishtraining.service.ThemeService;
 import com.example.zubarev.englishtraining.englishtraining.service.TrainingService;
@@ -51,9 +53,11 @@ public class MainController {
     private DictionaryService dictionaryService;
     private ThemeService themeService;
     private WordService wordService;
-    private LevelOfEducationService levelOfEducationService;
     private UserRepo userRepo;
     private TrainingService trainingService;
+    private LevelOfEducationService levelOfEducationService;
+    private LanguageProficiencyService languageProficiencyService;
+    private FieldOfActivity fireActivity;
 
     public MainController(DictionaryService dictionaryService, ThemeService themeService,
             WordService wordSercive,
@@ -492,7 +496,11 @@ public class MainController {
     @GetMapping("/")
     public String greeting(Model model) {
         getUser(model);
-        return "index";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();// get logged in username
+        User user = (User) userRepo.findByUsername(name);
+        model.addAttribute("user", user);
+        return "personalArea";
     }
     @GetMapping("/themes")
     public String themesUser(Model model) {

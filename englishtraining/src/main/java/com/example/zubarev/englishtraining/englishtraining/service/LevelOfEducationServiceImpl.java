@@ -17,5 +17,9 @@ public class LevelOfEducationServiceImpl implements LevelOfEducationService{
     public List<LevelOfEducation> getAll() {
         return (List<LevelOfEducation>) levelOfEducationRepos.findAll();
     }
+    @Override
+    public List<LevelOfEducation> findByIdLevelOfEducation(Long idLevelOfEducation) {
+        return (List<LevelOfEducation>) levelOfEducationRepos.findByIdLevelOfEducation(idLevelOfEducation);
+    }
     
 }

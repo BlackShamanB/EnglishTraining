@@ -1,0 +1,19 @@
+{{> header}}
+<h2>Личный кабинет</5h2>
+{{#user}}
+<form
+  action="/dictionaryList/{{ dictionary.idDictionary }}/delete"
+  method="POST">
+<div>Имя пользователя: <input type="text" id="username" name="username" value="{{username}}" required></div>
+<div>Пароль: <input type="text" id="password" name="password" value="{{password}}" required></div>
+<div>E-mail: <input type="text" id="email" name="email" value="{{#email}}{{email}}{{/email}}" required></div>
+<div>Телефон: <input type="text" id="phone" name="phone" value="{{#phone}}{{phone}}{{/phone}}" required></div>
+<div>Пол: <input type="text" id="gender" name="gender" value="{{#gender}}{{gender}}{{/gender}}" required></div>
+<div>Возраст: <input type="text" id="age" name="age" value="{{age}}" required></div>
+<div>Сфера деятельности: <input type="text" id="idLevelOfEducation" name="idLevelOfEducation" value="{{idLevelOfEducation}}" required></div>
+<div>Язык: <input type="text" id="idFieldOfActivity" name="idFieldOfActivity" value="{{idFieldOfActivity}}" required></div>
+<div>Образование: <input type="text" id="idLanguageProficiency" name="idLanguageProficiency" value="{{idLanguageProficiency}}" required></div>
+</form>
+{{/user}}
+
+{{> footer}}

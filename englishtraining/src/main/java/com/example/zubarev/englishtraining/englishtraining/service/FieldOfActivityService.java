@@ -1,5 +1,5 @@
 package com.example.zubarev.englishtraining.englishtraining.service;
-
-public class FieldOfActivityService {
-    
+import java.util.List;
+public interface FieldOfActivityService {
+    public List<FieldOfActivityService> findByIdFieldOfActivityService(Long idFieldOfActivityService);
 }
