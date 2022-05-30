@@ -16,3 +16,4 @@ public class LanguageProficiencyServiceImpl implements LanguageProficiencyServic
         return (List<LanguageProficiency>) languageProficiencyRepos.findByIdLanguageProficiency(idLanguageProficiency);
     }
 }
+

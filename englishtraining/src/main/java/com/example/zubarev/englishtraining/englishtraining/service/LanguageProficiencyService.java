@@ -4,3 +4,4 @@ import com.example.zubarev.englishtraining.englishtraining.model.LanguageProfici
 public interface LanguageProficiencyService {
     public List<LanguageProficiency> findByIdLanguageProficiency(Long idLanguageProficiency);
 }
+

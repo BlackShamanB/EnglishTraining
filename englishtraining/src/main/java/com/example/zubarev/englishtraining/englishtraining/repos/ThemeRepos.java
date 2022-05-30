@@ -10,3 +10,4 @@ public interface ThemeRepos extends CrudRepository<Theme,Long> {
     List<Theme> findByIdDictionary(Long idDictionary);
     Theme findByIdTheme(Long idTheme);
 }
+

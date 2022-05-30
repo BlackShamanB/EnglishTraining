@@ -27,6 +27,7 @@ import com.example.zubarev.englishtraining.englishtraining.model.Word;
 import com.example.zubarev.englishtraining.englishtraining.repos.TrainingRepos;
 import com.example.zubarev.englishtraining.englishtraining.repos.UserRepo;
 import com.example.zubarev.englishtraining.englishtraining.service.DictionaryService;
+import com.example.zubarev.englishtraining.englishtraining.service.FieldOfActivityService;
 import com.example.zubarev.englishtraining.englishtraining.service.LanguageProficiencyService;
 import com.example.zubarev.englishtraining.englishtraining.service.LevelOfEducationService;
 import com.example.zubarev.englishtraining.englishtraining.service.ThemeService;
@@ -57,17 +58,22 @@ public class MainController {
     private TrainingService trainingService;
     private LevelOfEducationService levelOfEducationService;
     private LanguageProficiencyService languageProficiencyService;
-    private FieldOfActivity fireActivity;
+    private FieldOfActivityService fieldOfActivityService;
 
-    public MainController(DictionaryService dictionaryService, ThemeService themeService,
-            WordService wordSercive,
-            LevelOfEducationService levelOfEducationService, UserRepo userRepo, TrainingService trainingService) {
+    
+    
+
+    public MainController(DictionaryService dictionaryService, ThemeService themeService, WordService wordService,
+            UserRepo userRepo, TrainingService trainingService, LevelOfEducationService levelOfEducationService,
+            LanguageProficiencyService languageProficiencyService, FieldOfActivityService fieldOfActivityService) {
         this.dictionaryService = dictionaryService;
         this.themeService = themeService;
-        this.wordService = wordSercive;
-        this.levelOfEducationService = levelOfEducationService;
+        this.wordService = wordService;
         this.userRepo = userRepo;
         this.trainingService = trainingService;
+        this.levelOfEducationService = levelOfEducationService;
+        this.languageProficiencyService = languageProficiencyService;
+        this.fieldOfActivityService = fieldOfActivityService;
     }
 
     public void getUser(Model model) {
