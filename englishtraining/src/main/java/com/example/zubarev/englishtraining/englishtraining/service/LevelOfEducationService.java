@@ -7,4 +7,5 @@ import com.example.zubarev.englishtraining.englishtraining.model.LevelOfEducatio
 public interface LevelOfEducationService {
     public List<LevelOfEducation> getAll();
     public List<LevelOfEducation> findByIdLevelOfEducation(Long idLevelOfEducation);
+    public LevelOfEducation add(LevelOfEducation levelOfEducation);
 }

@@ -21,5 +21,9 @@ public class LevelOfEducationServiceImpl implements LevelOfEducationService{
     public List<LevelOfEducation> findByIdLevelOfEducation(Long idLevelOfEducation) {
         return (List<LevelOfEducation>) levelOfEducationRepos.findByIdLevelOfEducation(idLevelOfEducation);
     }
+    @Override
+    public LevelOfEducation add(LevelOfEducation levelOfEducation) {
+        return levelOfEducationRepos.save(levelOfEducation);
+    }
     
 }

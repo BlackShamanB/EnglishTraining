@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-    <title>Spring Security Example </title>
-</head>
+{{>header}}
 
 <body>
-    <h2>
-        Login page
+    <h2 class="title">
+        Авторизация
     </h2>
     <div class="container">
         <div class="row">
+            <div class="col-6 offset-3 ">
             <form action="/login" method="post">
-                <div class="col-12 auth_input"><label> User Name : <input type="text" name="username" /> </label></div>
-                <div class="col-12 auth_input"><label> Password: <input type="password" name="password" /> </label></div>
+                <div class="col-12 auth_input"><input type="text" name="username" placeholder="E-mail или логин"/> 
+                <input type="password" name="password" placeholder="Пароль"/> 
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <div class="col-12 auth_input"><input type="submit" value="Sign In" /></div>
+                <input type="submit" value="Войти" />
+                <div class="col-12 auth_input btn_reg"><a type="text" href="/registration">Регистрация</a></div>
             </form>
+            </div>
         </div>
     </div>
-    <a href="/registration">Add new user</a>
+    
 </body>
-
-</html>

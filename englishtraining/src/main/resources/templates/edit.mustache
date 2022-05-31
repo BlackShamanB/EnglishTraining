@@ -1,29 +1,39 @@
 {{> header}}
 
 {{#dictionaryEdit}}
-<h1>{{#add}}Создать новый словарь:{{/add}}{{^add}}Изменить словарь:{{/add}}</h1>
-<a href="/dictionaryList">Назад к списку словарей</a>
-<br /><br />
-<form action="{{#add}}/dictionaryList/add{{/add}}{{^add}}/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}"
-    name="dictionary" method="POST">
-    <table border="0">
-        {{#dictionary.idDictionary}}
-        <tr>
-            <td>idDictionary</td>
-            <td>:</td>
-            <td>{{dictionary.idDictionary}}</td>
-        </tr>
-        {{/dictionary.idDictionary}}
-        <tr>
-            <td>Название словаря</td>
-            <td>:</td>
-            <td><input type="text" name="difficultyLevel"
-                    value="{{#dictionary.difficultyLevel}}{{dictionary.difficultyLevel}}{{/dictionary.difficultyLevel}}" />
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-</form>
+
+<div class="container">
+    <h1 class="title">{{#add}}Создать новый словарь:{{/add}}{{^add}}Изменить словарь:{{/add}}</h1>
+    <div class="row">
+        <form
+            action="{{#add}}/dictionaryList/add{{/add}}{{^add}}/dictionaryList/{{dictionary.idDictionary}}/edit{{/add}}"
+            name="dictionary" method="POST">
+            <table border="0">
+                {{#dictionary.idDictionary}}
+                <tr>
+                    <td>ID словаря</td>
+                    <td>:</td>
+                    <td>{{dictionary.idDictionary}}</td>
+                </tr>
+                {{/dictionary.idDictionary}}
+                <tr>
+                    <td>Название словаря</td>
+                    <td>:</td>
+                    <td><input type="text" name="difficultyLevel"
+                            value="{{#dictionary.difficultyLevel}}{{dictionary.difficultyLevel}}{{/dictionary.difficultyLevel}}" />
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="{{#add}}Создать{{/add}}{{^add}}Изменить{{/add}}" /><input type="hidden"
+                name="_csrf" value="{{_csrf.token}}" />
+        </form>
+
+
+    </div>
+    <div class="row">
+        <div class="btn"><a href="/dictionaryList">Назад к списку словарей</a></div>
+    </div>
+</div>
 {{/dictionaryEdit}}
 
 {{#themeEdit}}
@@ -48,7 +58,8 @@
             <td><input type="text" name="theme" value="{{#theme.theme}}{{theme.theme}}{{/theme.theme}}" /></td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf"
+        value="{{_csrf.token}}" />
 </form>
 {{/themeEdit}}
 
@@ -76,15 +87,18 @@
         <tr>
             <td>Транскрипция</td>
             <td>:</td>
-            <td><input type="text" name="transcription" value="{{#word.transcription}}{{word.transcription}}{{/word.transcription}}" /></td>
+            <td><input type="text" name="transcription"
+                    value="{{#word.transcription}}{{word.transcription}}{{/word.transcription}}" /></td>
         </tr>
         <tr>
             <td>Перевод</td>
             <td>:</td>
-            <td><input type="text" name="translate" value="{{#word.translate}}{{word.translate}}{{/word.translate}}" /></td>
+            <td><input type="text" name="translate" value="{{#word.translate}}{{word.translate}}{{/word.translate}}" />
+            </td>
         </tr>
     </table>
-    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" /><input type="hidden" name="_csrf"
+        value="{{_csrf.token}}" />
 </form>
 {{/wordEdit}}
 <br />

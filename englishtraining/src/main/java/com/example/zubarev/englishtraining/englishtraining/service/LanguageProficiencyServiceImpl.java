@@ -15,5 +15,13 @@ public class LanguageProficiencyServiceImpl implements LanguageProficiencyServic
     public List<LanguageProficiency> findByIdLanguageProficiency(Long idLanguageProficiency) {
         return (List<LanguageProficiency>) languageProficiencyRepos.findByIdLanguageProficiency(idLanguageProficiency);
     }
+    @Override
+    public List<LanguageProficiency> getAll() {
+        return (List<LanguageProficiency>) languageProficiencyRepos.findAll();
+    }
+    @Override
+    public LanguageProficiency add(LanguageProficiency languageProficiency) {
+        return languageProficiencyRepos.save(languageProficiency);
+    }
 }
 

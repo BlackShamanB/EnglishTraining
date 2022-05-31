@@ -19,6 +19,8 @@ import java.util.Optional;
 
 import com.example.zubarev.englishtraining.englishtraining.model.Dictionary;
 import com.example.zubarev.englishtraining.englishtraining.model.FieldOfActivity;
+import com.example.zubarev.englishtraining.englishtraining.model.LanguageProficiency;
+import com.example.zubarev.englishtraining.englishtraining.model.LevelOfEducation;
 import com.example.zubarev.englishtraining.englishtraining.model.Role;
 import com.example.zubarev.englishtraining.englishtraining.model.Theme;
 import com.example.zubarev.englishtraining.englishtraining.model.Training;
@@ -74,8 +76,10 @@ public class MainController {
         this.levelOfEducationService = levelOfEducationService;
         this.languageProficiencyService = languageProficiencyService;
         this.fieldOfActivityService = fieldOfActivityService;
-    }
 
+    }
+    
+  
     public void getUser(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -506,6 +510,9 @@ public class MainController {
         String name = auth.getName();// get logged in username
         User user = (User) userRepo.findByUsername(name);
         model.addAttribute("user", user);
+        model.addAttribute("levelOfEducation", levelOfEducationService.getAll());
+        model.addAttribute("languageProficiency", languageProficiencyService.getAll());
+        model.addAttribute("fieldOfActivity", fieldOfActivityService.getAll());
         return "personalArea";
     }
     @GetMapping("/themes")

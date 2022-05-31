@@ -7,5 +7,5 @@ import com.example.zubarev.englishtraining.englishtraining.service.FieldOfActivi
 import org.springframework.data.repository.CrudRepository;
 
 public interface FieldOfActivityRepos extends CrudRepository<FieldOfActivity,Long> {
-    List<FieldOfActivityService> findByIdFieldOfActivity(Long idFieldOfActivity);
+    List<FieldOfActivity> findByIdFieldOfActivity(Long idFieldOfActivity);
 }

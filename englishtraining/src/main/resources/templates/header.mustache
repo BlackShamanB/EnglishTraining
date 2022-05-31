@@ -12,7 +12,7 @@
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">English Training</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -31,7 +31,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/login">Выйти</a>
       </li>
-      <li class="nav-item" style="float:right">{{#user}}{{roles}}{{username}}{{/user}}</li>
+      <li class="nav-item align-items-end" style="float:right; padding-left: 500px;">{{#user}}{{username}}{{/user}}</li>
     </ul>
   </div>
   {{/role_admin}}
@@ -50,17 +50,8 @@
       <li class="nav-item">
         <a class="nav-link" href="/login">Выйти</a>
       </li>
-      <li class="nav-item" style="float:right">{{#user}}{{roles}}{{username}}{{/user}}</li>
+      <li class="nav-item align-items-end" style="float:right; color:black; padding-left: 750px;"><a class="nav-link" href="#">{{#user}}{{username}}{{/user}}</a></li>
     </ul>
   </div>
   {{/role_user}}
 </nav>
-<style>
-  input[type=text] {
-    padding:10px;
-    margin:10px 0;
-  }
-  body{
-      background-color: aqua;
-  }
-</style>
